@@ -1,0 +1,13 @@
+.board {
+    display: grid;
+}
+
+.whiteCell {
+    background-color: gray;
+    border: 3px solid blue;
+}
+
+.blackCell {
+    border: 3px solid red;
+    background-color: white;
+}

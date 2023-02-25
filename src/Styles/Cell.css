@@ -1,0 +1,43 @@
+.cell {
+
+    /* Чтобы нельзя было выделять фигуры */
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /*  */
+
+    font-size: 5em;
+    width: 1em;
+    height: 1em;
+    border: 2px solid grey;
+    text-align: center;
+    display: inline;
+    justify-content: center;
+    justify-items: center;
+}
+
+.whiteBack {
+    /* background-color: rgba(200, 200, 200, 0.01); */
+}
+
+.blackBack {
+    background-color: rgba(15, 15, 15, 0.9);
+}
+
+.green {
+    background-color: rgba(50, 255, 50, 0.1); 
+}
+
+.white {
+    /* border: 1px solid red; */
+    color: rgba(215, 215, 215, 0.8);
+}
+
+/* TODO: поменять цвет*/
+.black {
+    /* border: 2px solid blue; */
+    color: rgba(150, 150, 150, 0.5);
+    font-weight: lighter;
+}
