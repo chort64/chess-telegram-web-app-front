@@ -1,18 +1,19 @@
 const url = "http://localhost:8080/game"
 
-export async function createGame(){
-    const {id, field} = await fetch(url + "/createGame", {
+export async function updateStatusGame(gameId, playerLogin){
+    const data = {gameId, playerLogin}
+    const {id, field, yourColor} = await fetch(url + "/updateStatusGame", {
         method: "POST",
-        headers: {"Content-Type":"application/json"}
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(data)
     })
     .then(res => res.json())
-
-    return id;
+    return {field, yourColor};
 }   
 
-export async function makeMove(id, oldX, oldY, newX, newY){
-    const data = {id, oldX, oldY, newX, newY};
-    const field = await fetch(url + "/makeMove", {
+export async function makeMove(gameId, playerLogin, newX, newY, oldX, oldY) {
+    const data = {gameId, playerLogin, newX, newY, oldX, oldY};
+    const {field, gameID, whoseMove} = await fetch(url + "/makeMove", {
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify(data)
@@ -31,8 +32,8 @@ export async function makeMove(id, oldX, oldY, newX, newY){
     return field;
 }   
 
-export async function possibleMoves(id, x, y) {
-    const data = {id, x, y};
+export async function possibleMoves(id, playerLogin, x, y) {
+    const data = {id, playerLogin, x, y};
     const array = await fetch(url + "/getPossibleMoves", {
         method: "POST",
         headers: {"Content-Type":"application/json"},
@@ -41,36 +42,4 @@ export async function possibleMoves(id, x, y) {
     .then(res => res.json());
 
     return array;
-}
-
-export async function getField(gameId) {
-    const data = {gameId};
-    const field = await fetch(url + "/getField", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify(data)
-    })
-    .then(res => res.json())
-
-    return field;
-}
-
-export async function connectToWhite(gameId, login) {
-    const data = {gameId, login};
-    const response = await fetch(url + "/connectToWhite", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify(data)
-    })
-    .then(res => res.json());
-}
-
-export async function connectToBlack(gameId, login) {
-    const data = {gameId, login};
-    const response = await fetch(url + "/connectToBlack", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify(data)
-    })
-    .then(res => res.json());
 }

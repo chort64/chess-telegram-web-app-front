@@ -2,15 +2,15 @@ import React from 'react'
 import '../Styles/Cell.css'
 
 export function Cell (props) { 
-  var symbol = "";
 
-  var backgroundColor = (props.rowIndex + props.cellIndex) % 2 == 0 ? "whiteBack" : "blackBack";
-  var number = props.number;
-  var color = number > 0 ? "white" : "black";
-  var green = (number >= 10 || number <= -10) ? "green" : "";
+  var symbol = ""
+  var number  = props.number;
+  var color   = number > 0 ? "white" : number < 0 ? "black" : "";
+
+  var backgroundColor = (props.rowIndex + props.cellIndex) % 2 == 0 ? "lightBack" : "darkBack";
   
-  switch (number % 10) {
-    case(0): symbol = <div></div>; break;
+  switch (number) {
+    case(0):           symbol = <div></div>;        break; //Пусто
     case(1): case(-1): symbol = <div>&#9812;</div>; break; //Король
     case(2): case(-2): symbol = <div>&#9813;</div>; break; //Королева
     case(3): case(-3): symbol = <div>&#9815;</div>; break; //Слон
@@ -19,10 +19,10 @@ export function Cell (props) {
     case(6): case(-6): symbol = <div>&#9817;</div>; break; //Пешка
   }
 
-  var classes = "cell" + " " + color + " " + backgroundColor + " " + green;
+  var classes = "cell" + " " + color + " " + backgroundColor
 
   return (
-    <div className={classes} onClick={() => props.onClick()}>
+    <div className={classes} id={props.id} onClick={() => props.onClick()}>
       {symbol}
     </div>
   )

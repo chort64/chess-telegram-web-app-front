@@ -3,78 +3,52 @@ import { useState } from 'react';
 import { Cell } from './Cell';
 import '../Styles/Row.css'
 import '../Styles/Board.css'
-import { getField, makeMove, possibleMoves } from '../Controller/controller';
+import { makeMove, possibleMoves, updateStatusGame } from '../Controller/controller';
 import { useParams } from 'react-router-dom';
+import {removeGreen, makeGreen} from '../Service/ClickCell'
 
 export function Board() {
 
     const {id} = useParams();
-    const {color} = useParams();
-    const [coordinates, setCoordinates] = useState([]);
-    const [whoMove, setWhoMove] = useState(1);
+    const {playerLogin} = useParams();
     const [board, setBoard] = useState([]);
-    const [reloaded, setReloaded] = useState(true);
-    const [connectedToBlack, setConnectedToBlack] = useState(color == "b" ? true : false);
+    const [isReloaded, setIsReloaded] = useState(false)
+    const [color, setColor] = useState()
+    let selectedCell = []
 
-    function updateBoard() {
-        if (reloaded) {
-            getField(id).then(res => {
-                if (connectedToBlack) {
-                    setBoard(res.field.reverse());
-                } else {
-                    setBoard(res.field);
-                }
-                setWhoMove(res.whoMove);
-            })
-            setReloaded(false);
-        }
+    if (!isReloaded) {
+        updateStatusGame(id, playerLogin).then(res => setColor(res.yourColor))
+        updateStatusGame(id, playerLogin).then(res => setBoard(res.field))
+        setIsReloaded(true);
     }
 
-    updateBoard();
+    function clickCell(x, y) {
 
-    function clickCell(newCoordinates) {
-        if (coordinates.length === 0) {
-            setCoordinates(newCoordinates);
-            var moves = possibleMoves(id, newCoordinates[0], newCoordinates[1]);
-            moves.then(res => {
-                if (connectedToBlack) {
-                    setBoard(res.field.reverse())
-                }
-                else {
-                    setBoard(res.field)
-                }
-            })
+        if (selectedCell.length === 0) {
+            selectedCell = [x, y];
+            makeGreen(id, playerLogin, x, y, color);
+        } else if (document.getElementById(x+"_"+y).classList.contains(color > 0 ? "white" : "black")) {
+            selectedCell = [x, y]
+            removeGreen();
+            makeGreen(id, playerLogin, x, y, color);
         }
         else {
-            var field = makeMove(id, coordinates[0], coordinates[1]
-                                       , newCoordinates[0], newCoordinates[1]);
-            field.then(res => {
-                if (connectedToBlack) {
-                    setBoard(res.field.reverse())
-                }
-                else {
-                    setBoard(res.field)
-                }
-                setWhoMove(res.whoMove);
-            });
-            setCoordinates([]);
+            var request = makeMove( id, playerLogin, x, y, selectedCell[0], selectedCell[1]);
+            selectedCell = [];
+            removeGreen();
+            request.then(res => setBoard(res));
         }
     }
 
     return (
         <div className='board'>
             {board.map((row, rowIndex) =>
-                <div className='row' key={rowIndex}>
-                    {row.map((cell, cellIndex) => 
-                        <Cell number={cell} rowIndex={connectedToBlack ? 7 - rowIndex : rowIndex} cellIndex={connectedToBlack ? cellIndex : cellIndex} key={cellIndex} 
-                        onClick={() => 
-                            (cell > 0 && whoMove > 0) || (cell < 0 && whoMove < 0) 
-                            || coordinates.length > 0 ? clickCell([ connectedToBlack ? 7 - rowIndex : rowIndex
-                                                                  , connectedToBlack ? cellIndex : cellIndex ])
-                                                      : console.log('пусто')
-                        } 
+                <div className='row' key={rowIndex}> 
+                    {row.map((cell, cellIndex) => {
+                        return <Cell number={cell} rowIndex={rowIndex} cellIndex={cellIndex} key={cellIndex} id={color > 0 ? rowIndex+"_"+cellIndex : (7 - rowIndex)+"_"+(7-cellIndex)}
+                              onClick={() => cell != 0 || selectedCell.length > 0 ? clickCell(color > 0 ? rowIndex : 7-rowIndex, color > 0 ? cellIndex : 7 - cellIndex) : console.log(rowIndex, cellIndex)} 
                         />
-                    )}
+                    })}
                 </div>
             )}
         </div>
