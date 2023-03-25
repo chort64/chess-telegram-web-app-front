@@ -1,4 +1,5 @@
-const url = "http://localhost:8080/game"
+// const url = "http://localhost:8080/game"
+const url = "http://147.78.65.89:8080/game"
 
 export async function updateStatusGame(gameId, playerLogin){
     const data = {gameId, playerLogin}
