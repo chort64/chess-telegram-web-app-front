@@ -1,14 +1,16 @@
-// const url = "http://localhost:8080/game"
-const url = "http://147.78.65.89:8080/game"
+// const url = "https://localhost:8080/api/game"
+const url = "https://147.78.65.89:8080/game"
 
-export async function updateStatusGame(gameId, playerLogin){
-    const data = {gameId, playerLogin}
-    const {id, field, yourColor} = await fetch(url + "/updateStatusGame", {
+export async function updateStatusGame(gameId, playerId){
+    const data = {gameId, playerId}
+    const {id, field, yourColor} = await fetch(url + "/getGameStatus", {
+        // mode: "no-cors",
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify(data)
     })
     .then(res => res.json())
+    // .then(data => console.log(data))
     return {field, yourColor};
 }   
 
@@ -35,7 +37,7 @@ export async function makeMove(gameId, playerLogin, newX, newY, oldX, oldY) {
 
 export async function possibleMoves(id, playerLogin, x, y) {
     const data = {id, playerLogin, x, y};
-    const array = await fetch(url + "/getPossibleMoves", {
+    const array = await fetch(url + "/possibleMoves", {
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify(data)
