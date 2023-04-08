@@ -5,9 +5,9 @@ export async function updateStatusGame(gameId, playerId){
     const data = {gameId, playerId}
     const {id, field, yourColor} = await fetch(url + "/getGameStatus", {
         // mode: "no-cors",
-        method: "POST",
+        method: "GET",
         headers: {"Content-Type":"application/json"},
-        body: JSON.stringify(data)
+        // body: JSON.stringify(data)
     })
     .then(res => res.json())
     // .then(data => console.log(data))
