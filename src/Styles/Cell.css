@@ -8,9 +8,11 @@
     user-select: none;
     /*  */
 
-    font-size: 5em;
-    width: 1em;
-    height: 1em;
+    /* font-size: 5em; */
+    font-size: min(calc(92vw / 8), calc(92vh / 8));
+    width: min(calc(92vw / 8), calc(92vh / 8));
+    height: min(calc(92vw / 8), calc(92vh / 8));
+    /* height: 1em; */
     border: 2px solid grey;
     text-align: center;
     display: inline;
