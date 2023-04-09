@@ -17,8 +17,11 @@ export function Board() {
     let selectedCell = []
 
     if (!isReloaded) {
-        updateStatusGame(id, playerLogin).then(res => setColor(res.yourColor))
-        updateStatusGame(id, playerLogin).then(res => setBoard(res.field))
+        updateStatusGame(id, playerLogin).then(res => {
+            setColor(res.yourColor)
+            setBoard(res.field)
+        });
+        // updateStatusGame(id, playerLogin).then(res => setBoard(res.field))
         setIsReloaded(true);
     }
 

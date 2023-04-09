@@ -35,8 +35,8 @@ export async function makeMove(gameId, playerLogin, newX, newY, oldX, oldY) {
     return field;
 }   
 
-export async function possibleMoves(id, playerLogin, x, y) {
-    const data = {id, playerLogin, x, y};
+export async function possibleMoves(gameId, playerLogin, x, y) {
+    const data = {gameId, playerLogin, x, y};
     const array = await fetch(url + "/possibleMoves", {
         method: "POST",
         headers: {"Content-Type":"application/json"},
