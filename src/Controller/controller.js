@@ -1,5 +1,5 @@
 // const url = "https://localhost:8080/api/game"
-const url = "https://147.78.65.89:8080/game"
+const url = "https://uhov164.ru:8080/api/game"
 
 export async function updateStatusGame(gameId, playerId){
     const data = {gameId, playerId}
